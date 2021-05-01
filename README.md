@@ -65,6 +65,8 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![distortedroad][distortedroad]
+
+I have used the previously calculated `imgpoints` and `objpoints` to calibrate camera using `cv2.calibrateCamera` function, which returns distortion coefficients. These distortion coefficients can be used to undistort the image using `cv2.undistort` which gives the un distorted image below.
 ![undistortedroad][undistortedroad]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
