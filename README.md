@@ -1,7 +1,4 @@
 ## Advanced Lane Finding Project
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Advanced Lane Finding Project**
@@ -30,7 +27,7 @@ The goals / steps of this project are the following:
 
 [pespectivetransformed]: ./output_images/threshold_binary_birds_eye_transformed_test6.jpg "Perspective Transformed"
 
-[slidingwindowpolyfit]: ./output_images/threshold_binary_birds_eye_transformed_poly_fit_test6.jpg "Sliding window polynomial fit"
+[slidingwindowpolyfit2]: ./output_images/threshold_binary_birds_eye_transformed_poly_fit_2test6.jpg "Sliding window polynomial fit"
 
 [radiusplotted]: ./output_images/lane_plotted_test6.jpg "Radius plotted"
 
@@ -82,6 +79,8 @@ I have used the previously calculated `imgpoints` and `objpoints` to calibrate c
 
 I used a combination of color and gradient thresholds to generate a binary image (`cal_threshold_binary_image(img, grad_thresh, color_thresh)` in `./AdvancedLaneFinding.ipynb`).  Here's an example of my output for this step. Here I have stacked both gradient thresholded binary image and thresholded s color channel.
 
+For gradient thresholding I have chosen following hyperparameters. The gradient threshold are with minimum of 20 and maximum of 100. For s channel color thresholding min and max values are 170 and 255 respectively. 
+
 | Original Image | After binary thresholding |
 |---|---|
 |![test_prior_binarycombo][test_prior_binarycombo]|![binarycombo][binarycombo]|
@@ -106,7 +105,7 @@ I verified that my perspective transform was working as expected by drawing the 
 
 I created functions like `find_lane_pixels` and `fit_polynomial(birds_eye_image)` in the file  `./AdvancedLaneFinding.ipynb`. The `find_lane_pixels` uses image histogram to get the area where there is high concentration of pixels (which means high probability of lanes) and sliding window technique to find all the points that represent lanes. The `fit_polynomial` funtion tries to fit a 2nd degree poynomial. When the same polynomial is used to plot lanes there is a perfect alignment over the visible lanes.
 
-![slidingwindowpolyfit][slidingwindowpolyfit]
+![slidingwindowpolyfit2][slidingwindowpolyfit2]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
@@ -143,18 +142,7 @@ Here's a [link to my video result](./output_images/project_video_output.mp4)
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
-
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
-In summary the process is for every image in a video frame
-1. Undistort the image which is introduced by the camera
-2. Then identify lanes in the image using gradient thresholding techniques using sobel operator.
-3. Perform a perspective transformation to get birds eye view of the identified lanes
-4. Try to identify points that image and fit a second degree polynomial
-5. Using the polynomial derive all the points that falls on the lane
-6. Using these points for left lane and right lane, calculate radius and offset
-7. Create a polyfill overlay using the lane points identified in the image.
-
-Challenges
-1. Quite slow to perform video annotation
-2. Could not understand why the annotation logic I have did not work on the challenge video. 
+* The src and dest points for perspective transform was very much a trail and error. There must be a better way to do hyperparameter tuning to make sure the perspective transform works. 
+* Quite slow to perform video annotation. I dont' think this is acceptable efficent algorithm for live lane detection while driving.
+* The above implementation does not work if the video frame contains lanes from the opposite lanes, as  evident in the challenge video processing. The algorithm's histogram technique to find lane pixels might not be the right approach for all scenarios. 
+* Algorithm's polyfit is not working well if the lanes are curving too much like in a summit based roads.
